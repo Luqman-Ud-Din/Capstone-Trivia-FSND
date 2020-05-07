@@ -2,9 +2,9 @@ import unittest
 
 from flask_sqlalchemy import SQLAlchemy
 
-from backend.constants import StatusCode
-from backend.flaskr import create_app
-from backend.models import setup_db
+from constants import StatusCode
+from flaskr import create_app
+from models import setup_db
 
 
 class TriviaTestCase(unittest.TestCase):

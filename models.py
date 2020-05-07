@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, String, Integer
 
-from backend.constants import DATABASE_PATH
+from constants import DATABASE_PATH
 
 db = SQLAlchemy()
 

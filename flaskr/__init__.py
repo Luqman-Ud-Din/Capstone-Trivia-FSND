@@ -3,8 +3,8 @@ import random
 from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
 
-from backend.constants import QUESTIONS_PER_PAGE, StatusCode
-from backend.models import Category, setup_db, Question, paginate_selection, format_selection
+from constants import QUESTIONS_PER_PAGE, StatusCode
+from models import Category, setup_db, Question, paginate_selection, format_selection
 
 
 def create_app(test_config=None):
