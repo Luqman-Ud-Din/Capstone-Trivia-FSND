@@ -4,7 +4,7 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
 
 from constants import QUESTIONS_PER_PAGE, StatusCode
-from flaskr.auth import requires_auth
+from flaskr.auth import requires_auth, AuthError
 from models import Category, setup_db, Question, paginate_selection, format_selection
 
 
@@ -160,7 +160,7 @@ def create_app(test_config=None):
             abort(StatusCode.HTTP_404_NOT_FOUND.value)
 
         page = request.args.get('page', 1, type=int)
-        selection = Question.query.filter_by(category=category_id).all()
+        selection = Question.query.filter_by(category=str(category_id)).all()
         selection, total_selection_count = paginate_selection(selection, page=page, limit=QUESTIONS_PER_PAGE)
 
         return jsonify({
@@ -186,7 +186,7 @@ def create_app(test_config=None):
 
         category_id = quiz_category.get('id', None)
         if category_id:
-            questions = Question.query.filter_by(category=category_id)
+            questions = Question.query.filter_by(category=str(category_id))
         else:
             questions = Question.query
 
@@ -274,6 +274,15 @@ def create_app(test_config=None):
             'error': StatusCode.HTTP_422_UNPROCESSABLE_ENTITY.value,
             'message': StatusCode.HTTP_422_UNPROCESSABLE_ENTITY.name
         }), StatusCode.HTTP_422_UNPROCESSABLE_ENTITY.value
+
+    @app.errorhandler(AuthError)
+    def auth_error(error):
+        """
+        Error handling for our custom auth error class.
+        :param error:
+        :return:
+        """
+        return jsonify(error.error), error.status_code
 
     @app.errorhandler(StatusCode.HTTP_500_INTERNAL_SERVER_ERROR.value)
     def internal_server_error(error):
