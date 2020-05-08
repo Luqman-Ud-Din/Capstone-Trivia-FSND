@@ -4,8 +4,8 @@ import unittest
 from flask_sqlalchemy import SQLAlchemy
 
 from constants import StatusCode
-from flaskr import create_app
-from models import setup_db, Category, Question
+from flaskr import app
+from models import setup_db
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -30,7 +30,7 @@ class TriviaTestCase(unittest.TestCase):
         Setup db.
         :param self:
         """
-        self.app = create_app()
+        self.app = app
         self.client = self.app.test_client
 
         setup_db(self.app)
