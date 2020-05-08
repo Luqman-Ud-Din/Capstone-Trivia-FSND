@@ -73,7 +73,7 @@ def check_permissions(permission, payload):
     if 'permissions' in payload and permission in payload['permissions']:
         return True
 
-    raise_auth_error(StatusCode.HTTP_401_UNAUTHORIZED.value)
+    raise_auth_error(StatusCode.HTTP_401_UNAUTHORIZED.name)
 
 
 def verify_decode_jwt(token):
