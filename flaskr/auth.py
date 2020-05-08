@@ -7,10 +7,9 @@ from jose import jwt
 
 from constants import StatusCode, ErrorMessage
 
-# 'https://dev-fsnd-luqman.auth0.com/authorize?response_type=token&client_id=rNjPqKWAB92MleZ65442GuWg3vkJKBFN&redirect_uri=http://localhost:8080/login-results&audience=cafe'
 AUTH0_DOMAIN = 'dev-fsnd-luqman.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'cafe'
+API_AUDIENCE = 'trivia'
 
 
 class AuthError(Exception):
