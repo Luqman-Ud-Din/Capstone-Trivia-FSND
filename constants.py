@@ -43,4 +43,4 @@ DATABASE_PATH = "postgres://{username}:{password}@{host}:{port}/{name}".format(
     **DATABASE_CONFIGURATION
 )
 
-DATABASE_URL = 'postgres://wsutscdutixvob:657152b3032643d1b3f72467a8dd0f5c658ec5c91786e0446704fb59879c7a2b@ec2-50-17-21-170.compute-1.amazonaws.com:5432/d5bnhi6a2qsut6'
+DATABASE_URL = os.environ.get('DATABASE_URL') or DATABASE_PATH
