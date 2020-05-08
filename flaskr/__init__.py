@@ -165,7 +165,7 @@ def get_questions_by_category(category_id):
         abort(StatusCode.HTTP_404_NOT_FOUND.value)
 
     page = request.args.get('page', 1, type=int)
-    selection = Question.query.filter_by(category=category_id).all()
+    selection = Question.query.filter_by(category=str(category_id)).all()
     selection, total_selection_count = paginate_selection(selection, page=page, limit=QUESTIONS_PER_PAGE)
 
     return jsonify({
