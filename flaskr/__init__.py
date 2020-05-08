@@ -3,12 +3,12 @@ import random
 from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
 
-from constants import QUESTIONS_PER_PAGE, StatusCode
+from constants import QUESTIONS_PER_PAGE, StatusCode, DATABASE_URL
 from flaskr.auth import requires_auth, AuthError
 from models import Category, setup_db, Question, paginate_selection, format_selection
 
 app = Flask(__name__)
-setup_db(app)
+setup_db(app, DATABASE_URL)
 CORS(app, resources={r"*": {"origins": "*"}})
 
 
