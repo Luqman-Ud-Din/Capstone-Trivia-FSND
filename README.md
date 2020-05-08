@@ -378,5 +378,5 @@ https://dev-fsnd-luqman.auth0.com/authorize?audience=trivia&response_type=token&
 Web app is deployed at:
 
 ```
-https://udacity-demo.herokuapp.com/
+https://trivia-capstone-demo.herokuapp.com/
 ```
