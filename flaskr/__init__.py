@@ -4,6 +4,7 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import CORS
 
 from constants import QUESTIONS_PER_PAGE, StatusCode
+from flaskr.auth import requires_auth
 from models import Category, setup_db, Question, paginate_selection, format_selection
 
 
@@ -55,7 +56,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/questions', methods=['POST'])
-    def create_question():
+    @requires_auth('add:question')
+    def create_question(token):
         """
         Add a question to database.
         :return:
@@ -73,7 +75,8 @@ def create_app(test_config=None):
         }), StatusCode.HTTP_201_CREATED.value
 
     @app.route('/questions/<int:question_id>', methods=['DELETE'])
-    def delete_question(question_id):
+    @requires_auth('delete:question')
+    def delete_question(token, question_id):
         """
         Delete question by given id.
         :param question_id:
@@ -89,7 +92,8 @@ def create_app(test_config=None):
         }), StatusCode.HTTP_204_NO_CONTENT.value
 
     @app.route('/questions/<int:question_id>', methods=['PATCH'])
-    def edit_question(question_id):
+    @requires_auth('edit:question')
+    def edit_question(token, question_id):
         """
         Edit question by given question id.
         :param question_id:
@@ -167,7 +171,8 @@ def create_app(test_config=None):
         })
 
     @app.route('/quizzes', methods=['POST'])
-    def play_quiz():
+    @requires_auth('play:quiz')
+    def play_quiz(token):
         """
         Play quiz route to get questions for quizzes.
         :return:
