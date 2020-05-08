@@ -42,15 +42,6 @@ class TriviaTestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
-        self.category = Category(type='Test Category')
-        self.category.insert()
-
-        self.question['category'] = int(self.category.id)
-        self.updated_question['category'] = int(self.category.id)
-
-        question = Question(**self.question)
-        question.insert()
-
         with open('./tokens.json') as json_file:
             data = json.load(json_file)
             self.admin_headers = {
@@ -74,7 +65,7 @@ class TriviaTestCase(unittest.TestCase):
         Executed after reach test
         :return:
         """
-        self.category.delete()
+        pass
 
     def test_get_categories_success(self):
         """
@@ -220,7 +211,7 @@ class TriviaTestCase(unittest.TestCase):
         Success case for get questions by category.
         :return:
         """
-        response = self.client().get(f'/categories/{self.category.id}/questions')
+        response = self.client().get(f'/categories/1/questions')
         json_data = response.get_json()
         self.assertEqual(response.status_code, StatusCode.HTTP_200_OK.value)
         self.assertTrue(json_data.get('success'))
