@@ -88,6 +88,29 @@ def create_app(test_config=None):
             'success': True
         }), StatusCode.HTTP_204_NO_CONTENT.value
 
+    @app.route('/questions/<int:question_id>', methods=['PATCH'])
+    def edit_question(question_id):
+        """
+        Edit question by given question id.
+        :param question_id:
+        :return:
+        """
+        question = Question.query.get(question_id)
+        if not question:
+            abort(StatusCode.HTTP_404_NOT_FOUND.value)
+
+        question_data = request.get_json()
+
+        for key, value in question_data.items():
+            setattr(question, key, value)
+
+        question.update()
+
+        return jsonify({
+            'success': True,
+            'question': question.format()
+        })
+
     @app.route('/questions/filter', methods=['POST'])
     def filter_questions():
         """
