@@ -94,6 +94,9 @@ GET '/categories'
 
 ```
 
+Auth0 Authentication URL
+GET `'https://dev-fsnd-luqman.auth0.com/authorize?audience=trivia&response_type=token&client_id=5d2Ugz6XYfOO3Pbti83945GDmMXx4zuL&redirect_uri=http://127.0.0.1:8080/login-results'`
+
 API Endpoints Documentation
 --------------------------------------------------------
 GET `'/categories'`
