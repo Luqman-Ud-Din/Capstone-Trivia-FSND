@@ -323,7 +323,7 @@ We recommend working within a virtual environment whenever using Python for proj
 
 #### PIP Dependencies
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
+Once you have your virtual environment setup and running, install dependencies by running:
 
 ```bash
 pip install -r requirements.txt
@@ -347,7 +347,9 @@ psql trivia < trivia.psql
 
 ## Running the server
 
-`FLASK_APP=backend/flaskr FLASK_ENV=development DATABASE_USER={username} DATABASE_PASSWORD={password} DATABASE_HOST=localshost DATABASE_PORT=5432 DATABASE_NAME=trivia flask run`
+```
+FLASK_APP=flaskr FLASK_ENV=development DATABASE_USER={username} DATABASE_PASSWORD={password} DATABASE_HOST=localshost DATABASE_PORT=5432 DATABASE_NAME=trivia flask run
+```
 
 
 Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
