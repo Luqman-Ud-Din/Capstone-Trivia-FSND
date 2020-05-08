@@ -1,6 +1,315 @@
 # Full Stack Trivia API Backend
 
-## Getting Started
+
+## Full Stack Trivia
+
+Udacity is invested in creating bonding experiences for its employees and students. A bunch of team members got the idea to hold trivia on a regular basis and created a  webpage to manage the trivia app and play the game, but their API experience is limited and still needs to be built out.
+
+The application has the following features:
+
+1) Display questions - both all questions and by category. Questions should show the question, category and difficulty rating by default and can show/hide the answer.
+2) Delete questions.
+3) Add questions and require that they include question and answer text.
+4) Update questions.
+5) Play the quiz game, randomizing either all questions or within a specific category.
+
+API Endpoints Documentation
+--------------------------------------------------------
+GET `'/categories'`
+
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Request Arguments: None
+- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
+
+```json5
+{
+    "categories": {
+        "1": "Science",
+        "2": "Art",
+        "3": "Geography",
+        "4": "History",
+        "5": "Entertainment",
+        "6": "Sports"
+    },
+    "success": true
+}
+```
+
+GET `'/questions'`
+
+- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
+- Fetches a list of questions.
+- Request Arguments: Page Number
+- Returns: Dictionary of Categories, current category, list of questions and total number of questions.
+
+```json5
+{
+	"categories": {
+		"1": "Science",
+		"2": "Art",
+		"3": "Geography",
+		"4": "History",
+		"5": "Entertainment",
+		"6": "Sports"
+	},
+	"current_category": null,
+	"questions": [
+		{
+			"answer": "Apollo 13",
+			"category": 5,
+			"difficulty": 4,
+			"id": 2,
+			"question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+		},
+		{
+			"answer": "Tom Cruise",
+			"category": 5,
+			"difficulty": 4,
+			"id": 4,
+			"question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+		}
+	],
+	"total_questions": 26,
+	"success": true
+}
+```
+
+DELETE `'/questions/<int:question_id>'`
+
+- Deletes question from the database.
+- Request Arguments: questions_id
+- Returns: true with status 204 if successfully deleted.
+
+```json5
+{
+    "success": true
+}
+```
+
+POST `'/questions'`
+
+- Create a new question
+- Request Body: question, answer, difficulty and category.
+- Returns: true and question id with status 201 if successfully created.
+
+Request
+
+```json5
+{
+    "question": "Test question",
+    "answer": "Answer",
+    "category": 1,
+    "difficulty": 1
+}
+```
+
+Response
+
+```json5
+{
+    "success": true,
+    "id": 15
+}
+```
+
+PATCH `'/questions<int:question_id>'`
+
+- Updates the question.
+- Request Arguments: questions_id
+- Request Body: question, answer, difficulty and category.
+- Returns: true and question id with status 200 if successfully updated.
+
+Request
+
+id=1
+```json5
+
+{
+    "question": "Test question",
+    "answer": "Answer",
+    "category": 1,
+    "difficulty": 1
+}
+```
+
+Response
+
+```json5
+{
+    "question": "Test question",
+    "answer": "Answer",
+    "category": 1,
+    "difficulty": 1,
+    "id": 1
+}
+```
+
+POST `'/categories/<int:category_id>/questions'`
+
+- To get questions based on category
+- Request Arguments: category_id
+- Returns: List of questions, total number of questions and current category.
+
+```json5
+{
+	"current_category": {
+		"id": 1,
+		"type": "Science"
+	},
+	"questions": [
+		{
+			"answer": "The Liver",
+			"category": 1,
+			"difficulty": 4,
+			"id": 20,
+			"question": "What is the heaviest organ in the human body?"
+		},
+		{
+			"answer": "Alexander Fleming",
+			"category": 1,
+			"difficulty": 3,
+			"id": 21,
+			"question": "Who discovered penicillin?"
+		}
+	],
+	"total_questions": 13,
+	"success": true
+}
+```
+
+POST `'/quizzes'`
+
+- In order to play the quiz.
+- Returns: Random question within the given category.
+
+Request
+
+```json5
+{
+    "quiz_category": {
+        "id": 1
+    },
+    "previous_questions": []
+}
+```
+
+Response
+
+```json5
+{
+    "question": {
+        "answer": "Blood",
+        "category": 1,
+        "difficulty": 4,
+        "id": 22,
+        "question": "Hematology is a branch of medicine involving the study of what?"
+    },
+    "success": true
+}
+```
+
+Errors
+--------------------------------------------------------
+
+Bad Request `400`
+
+```json5
+{
+  'success': false,
+  'error': 400,
+  'message': 'Bad Request'
+}
+```
+
+Unauthorized `401`
+
+```json5
+{
+  'success': false,
+  'error': 401,
+  'message': 'Unauthorized'
+}
+```
+
+Forbidden `403`
+
+```json5
+{
+  'success': false,
+  'error': 403,
+  'message': 'Forbidden'
+}
+```
+
+Not Found `404`
+
+```json5
+{
+  'success': false,
+  'error': 404,
+  'message': 'Not Found'
+}
+```
+
+Method Not Allowed `405`
+
+```json5
+{
+  'success': false,
+  'error': 405,
+  'message': 'Method Not Allowed'
+}
+```
+
+Unprocessable Entity `422`
+
+```json5
+{
+  'success': false,
+  'error': 422,
+  'message': 'Unprocessable Entity'
+}
+```
+
+Internal Server Error `500`
+
+```json5
+{
+  'success': false,
+  'error': 500,
+  'message': 'Internal Server Error'
+}
+```
+
+Permissions Documentation
+--------------------------------------------------------
+
+- `add:question` permission to add question through through POST `'/questions'` api
+- `edit:question` permission to update question through PATCH `'/questions<int:question_id>'` api
+- `delete:question` permission to delete question through through DELETE `'/questions<int:question_id>'` api
+- `play:quiz` permission to play quiz through POST `'/quizzes'` api
+
+Roles Documentation
+--------------------------------------------------------
+### Admin
+
+Can add/update/delete question
+
+Permissions:
+
+- `add:question`
+- `edit:question`
+- `delete:question`
+
+### Player
+
+Can play quiz
+
+Permissions:
+
+- `play:quiz`
+
+## Development environment setup
 
 ### Installing Dependencies
 
@@ -40,395 +349,17 @@ psql trivia < trivia.psql
 
 From within the `backend` directory first ensure you are working using your created virtual environment.
 
-To run the server, you need to set database configurations
-- username
-- password
-- database name
-- host
-- port
-
-execute:
+To run the server, execute:
 
 ```bash
-FLASK_APP=backend/flaskr FLASK_ENV=development DATABASE_USER={username} DATABASE_PASSWORD={password} DATABASE_HOST=localshost DATABASE_PORT=5432 DATABASE_NAME=trivia flask run
+export FLASK_APP=flaskr
+export FLASK_ENV=development
+flask run
 ```
 
 Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application.
-
-## Tasks
-
-One note before you delve into your tasks: for each endpoint you are expected to define the endpoint and response data. The frontend will be a plentiful resource because it is set up to expect certain endpoints and response data formats already. You should feel free to specify endpoints in your own way; if you do so, make sure to update the frontend or you will get some unexpected behavior.
-
-1. Use Flask-CORS to enable cross-domain requests and set response headers.
-2. Create an endpoint to handle GET requests for questions, including pagination (every 10 questions). This endpoint should return a list of questions, number of total questions, current category, categories.
-3. Create an endpoint to handle GET requests for all available categories.
-4. Create an endpoint to DELETE question using a question ID.
-5. Create an endpoint to POST a new question, which will require the question and answer text, category, and difficulty score.
-6. Create a POST endpoint to get questions based on category.
-7. Create a POST endpoint to get questions based on a search term. It should return any questions for whom the search term is a substring of the question.
-8. Create a POST endpoint to get questions to play the quiz. This endpoint should take category and previous question parameters and return a random questions within the given category, if provided, and that is not one of the previous questions.
-9. Create error handlers for all expected errors including 400, 404, 422 and 500.
-
-REVIEW_COMMENT
-```
-This README is missing documentation of your endpoints. Below is an example for your endpoint to get all categories. Please use it as a reference for creating your documentation and resubmit your code.
-
-Endpoints
-GET '/categories'
-GET ...
-POST ...
-DELETE ...
-
-GET '/categories'
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
-- Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
-
-```
-
-Auth0 Authentication URL
-GET `'https://dev-fsnd-luqman.auth0.com/authorize?audience=trivia&response_type=token&client_id=5d2Ugz6XYfOO3Pbti83945GDmMXx4zuL&redirect_uri=http://127.0.0.1:8080/login-results'`
-
-API Endpoints Documentation
---------------------------------------------------------
-GET `'/categories'`
-
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
-- Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs.
-
-```json5
-{
-    "categories": {
-        "1": "Science",
-        "2": "Art",
-        "3": "Geography",
-        "4": "History",
-        "5": "Entertainment",
-        "6": "Sports"
-    },
-    "success": true
-}
-```
-
-GET `'/questions'`
-
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
-- Fetches a list of questions in which each entry is question dictionary with the keys are answer, category, difficulty, id and question.
-- Request Arguments: Page Number
-- Returns: Dictionary of Categories, Current Category, List of questions and total number of questions.
-
-```json5
-{
-	"categories": {
-		"1": "Science",
-		"2": "Art",
-		"3": "Geography",
-		"4": "History",
-		"5": "Entertainment",
-		"6": "Sports"
-	},
-	"current_category": null,
-	"questions": [
-		{
-			"answer": "Apollo 13",
-			"category": 5,
-			"difficulty": 4,
-			"id": 2,
-			"question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-		},
-		{
-			"answer": "Tom Cruise",
-			"category": 5,
-			"difficulty": 4,
-			"id": 4,
-			"question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-		},
-		{
-			"answer": "Maya Angelou",
-			"category": 4,
-			"difficulty": 2,
-			"id": 5,
-			"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-		},
-		{
-			"answer": "Edward Scissorhands",
-			"category": 5,
-			"difficulty": 3,
-			"id": 6,
-			"question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-		},
-		{
-			"answer": "Muhammad Ali",
-			"category": 4,
-			"difficulty": 1,
-			"id": 9,
-			"question": "What boxer's original name is Cassius Clay?"
-		},
-		{
-			"answer": "Brazil",
-			"category": 6,
-			"difficulty": 3,
-			"id": 10,
-			"question": "Which is the only team to play in every soccer World Cup tournament?"
-		},
-		{
-			"answer": "Uruguay",
-			"category": 6,
-			"difficulty": 4,
-			"id": 11,
-			"question": "Which country won the first ever soccer World Cup in 1930?"
-		},
-		{
-			"answer": "George Washington Carver",
-			"category": 4,
-			"difficulty": 2,
-			"id": 12,
-			"question": "Who invented Peanut Butter?"
-		},
-		{
-			"answer": "Lake Victoria",
-			"category": 3,
-			"difficulty": 2,
-			"id": 13,
-			"question": "What is the largest lake in Africa?"
-		},
-		{
-			"answer": "The Palace of Versailles",
-			"category": 3,
-			"difficulty": 3,
-			"id": 14,
-			"question": "In which royal palace would you find the Hall of Mirrors?"
-		}
-	],
-	"total_questions": 26,
-	"success": true
-}
-```
-
-DELETE `'/questions/<int:question_id>'`
-
-- Delete question from the questions in database.
-- Request Arguments: questions_id(Question Id)
-- Returns: true with status 204 if successfully deleted.
-
-```json5
-{
-    "success": true
-}
-```
-
-POST `'/questions'`
-
-- Create a new question
-- Request Body: question, answer, difficulty and category.
-- Returns: true and question id with status 201 if successfully created.
-
-Request
-
-```json5
-{
-    "question": "Test 1",
-    "answer": "Answer 1",
-    "category": 1,
-    "difficulty": 1
-}
-```
-
-Response
-
-```json5
-{
-    "success": true,
-    "id": 15
-}
-```
-
-POST `'/questions/filter'`
-
-- Searches for the questions
-- Request Body: search term to search question on that.
-- Returns: List of questions and total number of questions.
-
-Request
-
-```json5
-{
-    "searchTerm": "Caged Bird"
-}
-```
-
-Response
-
-```json5
-{
-	"questions": [
-		{
-			"answer": "Maya Angelou",
-			"category": 4,
-			"difficulty": 2,
-			"id": 5,
-			"question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-		}
-	],
-	"total_questions": 1,
-	"success": true
-}
-```
-
-POST `'/categories/<int:category_id>/questions'`
-
-- To get questions based on category
-- Request Arguments: category_id (Category Id).
-- Returns: List of questions, total number of questions and current category.
-
-for category 1 response is below
-
-```json5
-{
-	"current_category": {
-		"id": 1,
-		"type": "Science"
-	},
-	"questions": [
-		{
-			"answer": "The Liver",
-			"category": 1,
-			"difficulty": 4,
-			"id": 20,
-			"question": "What is the heaviest organ in the human body?"
-		},
-		{
-			"answer": "Alexander Fleming",
-			"category": 1,
-			"difficulty": 3,
-			"id": 21,
-			"question": "Who discovered penicillin?"
-		},
-		{
-			"answer": "Blood",
-			"category": 1,
-			"difficulty": 4,
-			"id": 22,
-			"question": "Hematology is a branch of medicine involving the study of what?"
-		}
-	],
-	"total_questions": 3,
-	"success": true
-}
-```
-
-POST `'/quizzes'`
-
-- To get questions to play the quiz.
-- Returns: Random question within the given category.
-
-Request
-
-```json5
-{
-    "quiz_category": {
-        "id": 1
-    },
-    "previous_questions": []
-}
-```
-
-Response
-
-```json5
-{
-    "question": {
-        "answer": "Blood",
-        "category": 1,
-        "difficulty": 4,
-        "id": 22,
-        "question": "Hematology is a branch of medicine involving the study of what?"
-    },
-    "success": true
-}
-```
-
-Errors
---------------------------------------------------------
-
-Bad Request `400`
-
-```json5
-{
-  'success': false,
-  'error': 400,
-  'message': 'HTTP_400_BAD_REQUEST'
-}
-```
-
-Unauthorized `401`
-
-```json5
-{
-  'success': false,
-  'error': 401,
-  'message': 'HTTP_401_UNAUTHORIZED'
-}
-```
-
-Forbidden `403`
-
-```json5
-{
-  'success': false,
-  'error': 403,
-  'message': 'HTTP_403_FORBIDDEN'
-}
-```
-
-Not Found `404`
-
-```json5
-{
-  'success': false,
-  'error': 404,
-  'message': 'HTTP_404_NOT_FOUND'
-}
-```
-
-Method Not Allowed `405`
-
-```json5
-{
-  'success': false,
-  'error': 405,
-  'message': 'HTTP_405_METHOD_NOT_ALLOWED'
-}
-```
-
-Unprocessable Entity `422`
-
-```json5
-{
-  'success': false,
-  'error': 422,
-  'message': 'HTTP_422_UNPROCESSABLE_ENTITY'
-}
-```
-
-Internal Server Error `500`
-
-```json5
-{
-  'success': false,
-  'error': 500,
-  'message': 'HTTP_500_INTERNAL_SERVER_ERROR'
-}
-```
 
 ## Testing
 To run the tests, run
@@ -437,4 +368,20 @@ dropdb trivia_test
 createdb trivia_test
 psql trivia_test < trivia.psql
 python test_flaskr.py
+```
+
+Tokens to test the api end points are added in the `tokens.json` file.
+
+The below link is used to retrieve tokens.
+
+```
+https://dev-fsnd-luqman.auth0.com/authorize?audience=trivia&response_type=token&client_id=5d2Ugz6XYfOO3Pbti83945GDmMXx4zuL&redirect_uri=http://127.0.0.1:8080/login-results
+```
+
+`admin@mail.com` has the `Admin` role and `player@mail.com` has the `Player` role.
+
+Web app is deployed at:
+
+```
+https://udacity-demo.herokuapp.com/
 ```
